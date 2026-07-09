@@ -1,0 +1,51 @@
+Explanation QC
+
+you filter for mitochondrial, ribosomal and hemoglobin genes (these last are important 
+if using tissue)
+
+if I have multiple sample I want to divide the undata object for each sample and perform
+the QC SEPERATELY for each sample (both QC and normalization step)
+
+Cellbander, SoupX --> to remove ambient RNA 
+Maybe it's better to run the exclusion of ambient RNA before all the QC. 
+Run CellRanger and right after run Cellbander, then QC.
+
+Double detection tool creates artificial doubles by randomly selecting groups of cell together
+and add to the sample. Like this it will identify cluster enriched in doublets.
+
+3 different methods for normalization depending on your sample and the tool you use
+you want to remove the technical variations
+
+Feature selection:
+we have all the genes filtered, but is computational expensive to do 
+PCA and other analyisis on all (like housekeeping genes).
+So, we use highly variable genes, to tease out the cells!
+
+compute the variance of gene expression, try to fit a trend on the 
+graph and the gene above are the highly variable.
+In Seurat the function is the FindVariableFeature, not filtering out per gene but only selected (maxium 10.000 genes, is already a lot). 
+It depends on the sample, if is more homogeneous even 500-1000 genes,
+while if is heterogeneous higher (>1000). 
+
+Better to do the highly variable genes per batch or per sample. 
+Remember that words with '...' are a string, so if it said that is not defined maybe try to put brakets
+
+Each object has different layers, by default scanpy will take the first one, X layer. When performing the normalization you need to create another layer where store the raw data.
+
+When doing the feature selection I need the raw counts, so specify the raw count layer!
+
+PCA is not distorting the data when graphing data, while tSNE and UMAP
+does. PCA is linear and you can do assumption based on the distances,
+while for UMAP and tSNE distances means nothing. 
+
+UMAP is better to see the batch effect
+
+Integration and batch effect
+maybe start with the lighter integration method and then move to more
+strong methods. For example, there is also SCVI use the raw counts 
+
+CellTypist
+you have to align your genome to a reference. that reference should be a .pkl file, 
+idxmax () most common predicted label, count the majority of cells in one cluster. It will give you back only the annotation (assign to each cluster a cell type). 
+
+But I have to calculate the fraction of confidence, so verify that each cluster was assigned correctly, with the vast majority of cells really in that cluster. There should not be a 555 cells to cluster 8 and 554 cells to cluster 6. 
