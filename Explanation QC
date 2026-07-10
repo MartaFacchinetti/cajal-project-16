@@ -49,3 +49,9 @@ you have to align your genome to a reference. that reference should be a .pkl fi
 idxmax () most common predicted label, count the majority of cells in one cluster. It will give you back only the annotation (assign to each cluster a cell type). 
 
 But I have to calculate the fraction of confidence, so verify that each cluster was assigned correctly, with the vast majority of cells really in that cluster. There should not be a 555 cells to cluster 8 and 554 cells to cluster 6. 
+
+Container
+in order to make the analysis reproducible the versions should be listed down, or
+maintain as the same. Usually, you do with conda environment, but this is not transportable.
+
+Containers are made to pack all the apps and versions, all the Linux system, tools, packages to run your analysis.
